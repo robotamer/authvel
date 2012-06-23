@@ -6,7 +6,9 @@ Laravel Authentication
 At any point if you find your self not understanding these instructions then maybe you should go here first:   
 https://github.com/RoboTamer/learnvel
 
-### This app should be considered "alfa"!
+### This bundle should be considered "alfa"!
+
+#### Install
 
 Add following line to application/bundles.php
 
@@ -45,10 +47,10 @@ http://laravel.com/docs/database/migrations
 Go to your site:
     http://laravel.dev/auth  
 
-And login with admin:0711
+And login with admin:secret or what ever you specified in the config 
 
 
-Upgrading authvel
+#### Upgrade
 
     php artisan bundle:upgrade authvel
     
