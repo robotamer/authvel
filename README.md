@@ -42,7 +42,8 @@ Now we install authvel
 More info at:  
 http://laravel.com/docs/database/migrations
 
-
+Go to the bundles/authvel/views folder and rename the sample files
+You can edit the renamed files to fit your needs, they will not be overwritten
 
 Go to your site:
     http://laravel.dev/auth  
@@ -55,3 +56,4 @@ And login with admin:secret or what ever you specified in the config
     php artisan bundle:publish authvel
     php artisan bundle:upgrade authvel
     
+Go to the bundles/authvel/views folder and check for any upgrades to the sample files
