@@ -20,10 +20,10 @@ Route::filter('users', function() {
 
 
 Route::get('(:bundle)', array('as' => 'auth_lobby', 'before' => 'users', 'do' => function() {
-    return View::make('auth::login');
+    return View::make('authvel::login');
 }));
 Route::get('(:bundle)/login', array('as' => 'auth_login', 'before' => 'users', 'do' => function() {
-    return View::make('auth::login');
+    return View::make('authvel::login');
 }));
 
 Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests', 'do' => function() {
@@ -32,7 +32,7 @@ Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests'
 }));
 
 Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'guests', 'do' => function() {
-    return View::make('auth::settings');
+    return View::make('authvel::settings');
 }));
 
 Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'users', 'do' => function() {
