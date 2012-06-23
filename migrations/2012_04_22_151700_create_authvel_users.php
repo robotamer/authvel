@@ -17,7 +17,10 @@ class Authvel_Create_Authvel_Users {
             $table -> timestamps();
         });
 
-        DB::table('users') -> insert(array('username' => 'admin', 'password' => Hash::make('1234')));
+        $user = Config::get('laravel.username', 'admin');
+        $pass = Config::get('laravel.password', '1234');
+
+        DB::table('users') -> insert(array('username' => $user, 'password' => Hash::make($pass)));
     }
 
     /**

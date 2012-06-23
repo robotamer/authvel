@@ -20,7 +20,10 @@ Route::filter('users', function() {
 
 
 Route::get('(:bundle)', array('as' => 'auth_lobby', 'before' => 'users', 'do' => function() {
-    return View::make('authvel::login');
+    $layout = View::of('layout')->with('title', 'Login');
+    return $layout->nest('content', 'authvel::login');
+
+    //return View::make('authvel::login');
 }));
 Route::get('(:bundle)/login', array('as' => 'auth_login', 'before' => 'users', 'do' => function() {
     return View::make('authvel::login');
