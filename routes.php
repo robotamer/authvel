@@ -1,24 +1,23 @@
 <?php
+
 /**
- Schema::create('users', function($table) {
- $table -> increments('id');
- $table -> string('username', 64);
- $table -> string('password', 64);
- $table -> string('email', 128);
- });
-
- DB::table('users') -> insert(array('username' => 'admin', 'password' => Hash::make('1234')));
+ * Guest filter
+ * If is a guest send to login 
  */
-
 Route::filter('guests', function() {
-    if (!Auth::check())
+    if ( Auth::guest())
         return Redirect::to_route('auth_login');
 });
 
+/**
+ * User filter, filters users out
+ * If is a user send to seetings
+ */
 Route::filter('users', function() {
-    if (Auth::check())
+    if ( Auth::check())
         return Redirect::to_route('auth_settings');
 });
+
 
 Route::get('(:bundle)', array('as' => 'auth_lobby', 'before' => 'users', 'do' => function() {
     return View::make('auth::login');
@@ -36,7 +35,7 @@ Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'gue
     return View::make('auth::settings');
 }));
 
-Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'guests', 'do' => function() {
+Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'users', 'do' => function() {
     $credentials = array('username' => Input::get('username'), 'password' => Input::get('password'));
     if (Auth::attempt($credentials)) {
         // auth success

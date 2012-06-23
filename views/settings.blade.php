@@ -1,15 +1,17 @@
 <div class="header">
-    Welcome back, {{ Auth::user()->username }}!
-    <br />
-    {{ HTML::link('auth/logout', 'Logout') }}
+     {{ Auth::user()->username }} {{ HTML::link('auth/logout', 'Logout') }}
 </div>
 <div class="content">
-    <h1>Squirrel Info</h1>
-    <p>
-        This is our super red squirrel information page.
-    </p>
-    <p>
-        Be careful, the grey squirrels are watching.
-    </p>
-</div>
+    <h1>Settings</h1>
 
+<p>Change password:</p>
+
+</div>
+<pre>
+<?php 
+$i = Auth::check();
+var_dump($i);
+$i = Auth::guest();
+var_dump($i);
+?>
+</pre>
