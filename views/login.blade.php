@@ -10,4 +10,3 @@
 {{ Form::submit('Login') }}
 {{ Form::close() }}
 
-<?php

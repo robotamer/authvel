@@ -21,7 +21,7 @@ Route::filter('users', function() {
 
 Route::get('(:bundle)', array('as' => 'auth_lobby', 'before' => 'users', 'do' => function() {
     $layout = View::of('layout')->with('title', 'Login');
-    return $layout->nest('content', 'authvel::login');
+    return $layout->nest(Config::get('authvel::content'), 'authvel::login');
 
     //return View::make('authvel::login');
 }));
@@ -35,7 +35,9 @@ Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests'
 }));
 
 Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'guests', 'do' => function() {
-    return View::make('authvel::settings');
+    return View::make('layout')
+            -> with('title', 'Settings')
+            -> nest(Config::get('authvel::content'), 'authvel::settings');
 }));
 
 Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'users', 'do' => function() {

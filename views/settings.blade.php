@@ -1,17 +1,9 @@
-<div class="header">
+<div id="authval-header">
      {{ Auth::user()->username }} {{ HTML::link('auth/logout', 'Logout') }}
 </div>
-<div class="content">
-    <h1>Settings</h1>
+<div id="authval-content">
+<h2>Change password:</h2>
 
-<p>Change password:</p>
-
+<h3>;)</h3>
+<p>Tip: If you help it will move along faster.</p>
 </div>
-<pre>
-<?php 
-$i = Auth::check();
-var_dump($i);
-$i = Auth::guest();
-var_dump($i);
-?>
-</pre>

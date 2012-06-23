@@ -52,5 +52,6 @@ And login with admin:secret or what ever you specified in the config
 
 #### Upgrade
 
+    php artisan bundle:publish authvel
     php artisan bundle:upgrade authvel
     
