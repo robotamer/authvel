@@ -1,7 +1,5 @@
 #authvel => Laravel Authentication
 
-### This bundle should be considered "alfa"!
-
 ## Install
 
 Add following line to application/bundles.php
