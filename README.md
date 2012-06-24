@@ -3,9 +3,6 @@ authvel
 
 Laravel Authentication
 
-At any point if you find your self not understanding these instructions then maybe you should go here first:   
-https://github.com/RoboTamer/learnvel
-
 ### This bundle should be considered "alfa"!
 
 #### Install
@@ -20,7 +17,8 @@ Add following to application/start.php
     Laravel\Event::listen('laravel.started: authvel', function() {
         Laravel\Config::set('authvel::username', 'admin');
         Laravel\Config::set('authvel::password', 'secret');
-        Laravel\Config::set('authvel::content', 'content');
+        Laravel\Config::set('authvel::email',    'you@example.com');
+        Laravel\Config::set('authvel::content',  'content');
     });
 
 In your layout file the login forms will be posted to the **content** varibale.

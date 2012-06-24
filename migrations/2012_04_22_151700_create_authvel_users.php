@@ -1,6 +1,6 @@
 <?php
 
-class Authvel_Create_Authvel_Users {
+class Authvel_Create_Users {
 
     /**
      * Make changes to the database.

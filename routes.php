@@ -2,10 +2,10 @@
 
 /**
  * Guest filter
- * If is a guest send to login 
+ * If is a guest send to login
  */
 Route::filter('guests', function() {
-    if ( Auth::guest())
+    if (Auth::guest())
         return Redirect::to_route('auth_login');
 });
 
@@ -14,31 +14,25 @@ Route::filter('guests', function() {
  * If is a user send to seetings
  */
 Route::filter('users', function() {
-    if ( Auth::check()){
+    if (Auth::check()) {
         return Redirect::to_route('auth_settings');
     }
-        
+
 });
 
-Route::get('(:bundle)', array('as' => 'auth_lobby', 'before' => 'users', 'do' => function() {
-    return Redirect::to_route('auth_login');
+/**
+ * Lobby
+ **/
+Route::get('(:bundle)', array('as' => 'auth_lobby', function() {
+    return View::make('layout') -> with('title', 'User Lobby') -> nest(Config::get('authvel::content'), 'authvel::lobby');
 }));
 
+/**
+ * Login
+ */
 Route::get('(:bundle)/login', array('as' => 'auth_login', 'before' => 'users', 'do' => function() {
-    return View::make('layout')-> with('title', 'Login')
-        -> nest(Config::get('authvel::content'), 'authvel::login');;
-}));
-
-Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests', 'do' => function() {
-    Auth::logout();
-    return Redirect::to_route('auth_login');
-}));
-
-Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'guests', 'do' => function() {
-    Session::put('username', Auth::user()->username);
-    return View::make('layout')
-            -> with('title', 'Settings')
-            -> nest(Config::get('authvel::content'), 'authvel::settings');
+    return View::make('layout') -> with('title', 'Login') -> nest(Config::get('authvel::content'), 'authvel::login');
+    ;
 }));
 
 Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'users', 'do' => function() {
@@ -48,21 +42,60 @@ Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'use
         return Redirect::to_route('auth_settings');
     } else {
         // auth failed
-        return Redirect::to_route('auth_login') -> with('login_errors', true);
+        return Redirect::to_route('auth_login') -> with('messages', array('No match'));
     }
 }));
 
+/**
+ * Signup
+ */
+Route::get('(:bundle)/signup', array('as' => 'auth_signup', 'before' => 'users', 'do' => function() {
+    return View::make('layout') -> with('title', 'Signup') -> nest(Config::get('authvel::content'), 'authvel::signup');
+    ;
+}));
+
+Route::post('(:bundle)/signup', array('as' => 'auth_signup_post', 'before' => 'users', 'do' => function() {
+    $rules = array('email' => 'required|email|unique:users,email');
+    $validation = Validator::make(Input::all(), $rules);
+
+    if ($validation -> fails()) {
+        return Redirect::to_route('auth_signup') -> with_errors($validation);
+    } else {
+        $email = Input::get('email');
+        $user = new User();
+        $user -> create($email);
+        return Redirect::to_route('auth_lobby');
+    }
+}));
+
+/**
+ * Logout
+ */
+Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests', 'do' => function() {
+    Auth::logout();
+    return Redirect::to_route('auth_login');
+}));
+
+/**
+ * Settings
+ */
+Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'guests', 'do' => function() {
+    Session::put('username', Auth::user() -> username);
+    return View::make('layout') -> with('title', 'Settings') -> nest(Config::get('authvel::content'), 'authvel::settings');
+}));
+
+/**
+ * Error
+ */
 Route::any('(:bundle)/error', function() {
-    return View::make('layout')
-            -> with('title', 'Error')
-            -> nest(Config::get('authvel::content'), 'authvel::error');
+    return View::make('layout') -> with('title', 'Error') -> nest(Config::get('authvel::content'), 'authvel::error');
 });
 
 /**
  * Check if a user has access to the asset
- * 
+ *
  * @param $lock string This is the lock on the asset. A comma seperated list
- * @param $keys array This are the keys / roles available to the user 
+ * @param $keys array This are the keys / roles available to the user
  * @return boolern  TRUE or FALSE
  */
 
@@ -98,9 +131,7 @@ function CA($lock, $keys) {
         return TRUE;
     } else {
         Log::write('debug', "You don't have access to this area.");
-        Session::flash('error',"You don't have access to this area.");
+        Session::flash('error', "You don't have access to this area.");
     }
 }
-
-
 ?>
