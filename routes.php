@@ -62,8 +62,13 @@ Route::post('(:bundle)/signup', array('as' => 'auth_signup_post', 'before' => 'u
         return Redirect::to_route('auth_signup') -> with_errors($validation);
     } else {
         $email = Input::get('email');
-        $user = new User();
-        $user -> create($email);
+
+        $username = strstr($email, '@', TRUE) . rand(1000, 9999);
+        $password = randString(6, TRUE);
+        $user = new User;
+        $user -> fill(array('username' => $username, 'password' => $password, 'email' => $email, 'access' => 0));
+        $user -> save();
+        Auth::login($user -> id);
         return Redirect::to_route('auth_lobby');
     }
 }));
@@ -73,7 +78,7 @@ Route::post('(:bundle)/signup', array('as' => 'auth_signup_post', 'before' => 'u
  */
 Route::get('(:bundle)/logout', array('as' => 'auth_logout', 'before' => 'guests', 'do' => function() {
     Auth::logout();
-    return Redirect::to_route('auth_login');
+    return Redirect::to_route('auth_lobby');
 }));
 
 /**
@@ -84,12 +89,71 @@ Route::get('(:bundle)/settings', array('as' => 'auth_settings', 'before' => 'gue
     return View::make('layout') -> with('title', 'Settings') -> nest(Config::get('authvel::content'), 'authvel::settings');
 }));
 
+Route::post('(:bundle)/settings', array('as' => 'auth_settings_post', 'before' => 'guest', 'do' => function() {
+
+    $input = Input::all();
+    if (isset($input['username'])) {
+        $rules = array('username' => 'between:3,20|alpha_num|unique:users,username');
+        $validation = Validator::make(Input::all(), $rules);
+    }
+
+    if (isset($input['password'])) {
+        $rules = array('password' => 'between:5,20|alpha_num|confirmed');
+        $validation = Validator::make(Input::all(), $rules);
+    }
+
+    $validation = Validator::make(Input::all(), $rules);
+
+    if ($validation -> fails()) {
+        return Redirect::to_route('auth_settings') -> with_errors($validation);
+    } else {
+        $user = User::find(Auth::user() -> id);
+        if (isset($input['username'])) {
+            $user -> username = $input['username'];
+        }
+        if (isset($input['password'])) {
+            $user -> password = $input['password'];
+        }
+        $user -> save();
+        return Redirect::to_route('auth_settings');
+    }
+}));
+
 /**
  * Error
  */
 Route::any('(:bundle)/error', function() {
     return View::make('layout') -> with('title', 'Error') -> nest(Config::get('authvel::content'), 'authvel::error');
 });
+
+/**
+ * Readable param is good for captcha for example
+ *
+ * randString(rand(10,15));
+ *
+ * @category     RoboTamer
+ * @author       Dennis T Kaplan
+ * @copyright    Copyright (c) 2011, Dennis T Kaplan
+ * @license      http://www.RoboTamer.com/license.php
+ * @link         http://www.RoboTamer.com
+ *
+ * @version      1.3
+ * @param        string $length
+ * @param        bool   $readable
+ * @return       string
+ */
+function randString($length = 6, $readable = FALSE) {
+    if ($readable == FALSE) {
+        $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    } else {
+        $char = '23479ABCDEFHJLMNQRTUVWXYZabcefghijkmnopqrtuvwxyz';
+    }
+    $c = '';
+    for ($i = 1; $i <= $length; $i++) {
+        $c .= $char;
+    }
+    return substr(str_shuffle($c), 0, $length);
+}
 
 /**
  * Check if a user has access to the asset

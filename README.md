@@ -22,12 +22,12 @@ In your layout file the login forms will be posted to the **content** varibale.
 
     echo $content
 
-Next creating the Laravel migrations table  
+IF -> Next creating the Laravel migrations table if you haven't done this already
 
     php artisan migrate:install
 
 
-Now we can install authvel
+ELSE -> We install authvel
 
     php artisan bundle:publish authvel
     php artisan bundle:install authvel

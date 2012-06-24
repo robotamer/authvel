@@ -20,43 +20,5 @@ class User extends Eloquent {
     public function set_password($password) {
         $this -> set_attribute('password', Hash::make($password));
     }
-
-    public function create($email) {
-        $username = strstr($email, '@', TRUE) . rand(1000, 9999);
-        $password = randString(6, TRUE);
-        $this -> fill(array('username' => $username, 'password' => $password, 'email' => $email, 'access'=> 0));
-        $this -> save();
-        Auth::login($this);
-    }
-
-}
-
-/**
- * Readable param is good for captcha for example
- *
- * randString(rand(10,15));
- *
- * @category     RoboTamer
- * @author       Dennis T Kaplan
- * @copyright    Copyright (c) 2011, Dennis T Kaplan
- * @license      http://www.RoboTamer.com/license.php
- * @link         http://www.RoboTamer.com
- *
- * @version      1.3
- * @param        string $length
- * @param        bool   $readable
- * @return       string
- */
-function randString($length = 6, $readable = FALSE) {
-    if ($readable == FALSE) {
-        $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    } else {
-        $char = '23479ABCDEFHJLMNQRTUVWXYZabcefghijkmnopqrtuvwxyz';
-    }
-    $c = '';
-    for ($i = 1; $i <= $length; $i++) {
-        $c .= $char;
-    }
-    return substr(str_shuffle($c), 0, $length);
 }
 ?>
