@@ -1,9 +1,31 @@
-<div id="authval-header">
-     {{ Auth::user()->username }} {{ HTML::link('auth/logout', 'Logout') }}
+<div id="authval-menu">
+    {{ Session::get('username') }} {{ HTML::link('auth/logout', 'Logout') }}
 </div>
+<hr class="block" />
 <div id="authval-content">
-<h2>Change password:</h2>
 
-<h3>;)</h3>
-<p>Tip: If you help it will move along faster.</p>
+    {{ Form::open('auth/username') }}
+    @if (Session::has('username_errors'))
+    <span class="error">Username is not available</span>
+    @endif
+
+    {{ Form::label('username', 'Username') }}:
+    {{ Form::text('username', Session::get('username')) }}
+    {{ Form::submit('Save') }}
+    {{ Form::close() }}
+
+    <hr class="block" />
+
+    {{ Form::open('auth/password') }}
+    @if (Session::has('password_errors'))
+    <span class="error">Passwords don't match</span>
+    @endif
+
+    {{ Form::label('password', 'New password') }}:
+    {{ Form::password('password') }}
+    {{ Form::label('again', 'Repead password') }}:
+    {{ Form::password('password') }}
+    {{ Form::submit('Save') }}
+    {{ Form::close() }}
+
 </div>

@@ -23,17 +23,16 @@ Add following to application/start.php
         Laravel\Config::set('authvel::content', 'content');
     });
 
-In your layout file the login forms will be posted to the content varibale.
+In your layout file the login forms will be posted to the **content** varibale.
 
     echo $content
 
-Creating the Laravel migrations table  
-If you haven't done this for a different app already  
+Next creating the Laravel migrations table  
 
     php artisan migrate:install
 
 
-Now we install authvel
+Now we can install authvel
 
     php artisan bundle:publish authvel
     php artisan bundle:install authvel
@@ -42,18 +41,19 @@ Now we install authvel
 More info at:  
 http://laravel.com/docs/database/migrations
 
-Go to the bundles/authvel/views folder and rename the sample files
-You can edit the renamed files to fit your needs, they will not be overwritten
+Let's go to the ``bundles/authvel/views`` folder and rename the sample files
+You can edit the renamed files to fit your needs, they will not be overwritten when you upgrade
 
-Go to your site:
+Finally, go to your site: ''replace the domain part with yor setup``
     http://laravel.dev/auth  
 
-And login with admin:secret or what ever you specified in the config 
+And login with admin:secret or what ever you specified your secret to be in the config 
 
 
 #### Upgrade
+This part is easy, thanks to Laravel
 
     php artisan bundle:publish authvel
     php artisan bundle:upgrade authvel
     
-Go to the bundles/authvel/views folder and check for any upgrades to the sample files
+Go to the ``bundles/authvel/views`` folder and check for any upgrades to the sample files

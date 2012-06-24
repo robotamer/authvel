@@ -1,4 +1,4 @@
-{{ Form::open('auth/login') }} <!-- check for login errors flash var -->
+{{ Form::open('auth/login') }}
 @if (Session::has('login_errors'))
 <span class="error">Username and password don't match</span>
 @endif
@@ -9,4 +9,3 @@
 {{ Form::text('password') }}
 {{ Form::submit('Login') }}
 {{ Form::close() }}
-
