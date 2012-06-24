@@ -1,0 +1,10 @@
+<?php
+if (Auth::guest()){
+    echo '<ul><li><a href="/auth/login">Login</a></li>';
+    echo '<li><a href="/auth/signup">Signup</a></li></ul>';
+}else{
+    echo 'Wecome back '.Auth::user()->username;
+    echo '<ul><li><a href="/auth/settings">Settings</a></li>';
+    echo '<li><a href="/auth/logout">Logout</a></li></ul>';
+}
+?>
