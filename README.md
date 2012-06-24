@@ -1,11 +1,8 @@
-authvel
-=======
-
-Laravel Authentication
+#authvel => Laravel Authentication
 
 ### This bundle should be considered "alfa"!
 
-#### Install
+## Install
 
 Add following line to application/bundles.php
 
@@ -48,10 +45,13 @@ Finally, go to your site: ''replace the domain part with yor setup``
 And login with admin:secret or what ever you specified your secret to be in the config 
 
 
-#### Upgrade
-This part is easy, thanks to Laravel
+## Upgrade
+This part is easy, thanks to Laravel  
+#### Warning back up your database and all your customized files  first
 
     php artisan bundle:publish authvel
     php artisan bundle:upgrade authvel
     
 Go to the ``bundles/authvel/views`` folder and check for any upgrades to the sample files
+
+
