@@ -2,10 +2,6 @@
 
 class User extends Eloquent {
 
-    /**
-     * @ Pleace this in to config
-     */
-    public static $access = array('banned' => -1, 'not_verified' => 0, 'user' => 1, 'author' => 2, 'admin' => 100);
 
     public static $timestamps = true;
 

@@ -1,5 +1,14 @@
 <?php
 
+if (!Config::get('access')) {
+    include __dir__.'/config/access.php';
+    Config::set('access', $access);
+}
+
+$i = Config::get('authvel::access');
+var_export($i);
+exit;
+
 /**
  * Guest filter
  * If is a guest send to login
@@ -171,12 +180,13 @@ function randString($length = 6, $readable = FALSE) {
  * @return boolern  TRUE or FALSE
  */
 
-function CA($lock, $keys) {
+function CA($lock) {
     $check = FALSE;
     $lock = explode(',', str_replace(' ', '', $lock));
     $lock[] = 101;
     Log::write('debug', "Login Control 1");
     # Admin has always access
+    $keys = Config::get('access');
     if ($keys !== FALSE) {
         $keys = explode(',', str_replace(' ', '', $keys));
     } else {

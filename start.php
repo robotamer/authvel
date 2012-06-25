@@ -2,7 +2,6 @@
 
 Autoloader::namespaces(array('Authvel' => Bundle::path('authvel') . 'models', ));
 
-Autoloader::directories(array(__DIR__ . '/models',
 //path('app').'libraries',
-));
+Autoloader::directories(array(__DIR__ . '/models'));
 ?>
