@@ -1,5 +1,5 @@
 {{ Form::open('auth/signup') }}
-{{ Form::label('emial', 'Email') }}:
-{{ Form::text('email') }}
+{{ Form::label('email', 'Email') }}:
+{{ Form::text('email', Input::old('email')) }}
 {{ Form::submit('Submit') }}
 {{ Form::close() }}
