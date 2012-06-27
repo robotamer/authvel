@@ -10,6 +10,12 @@ var_export($i);
 exit;
 
 /**
+ *
+ *Password reset example
+ * http://forums.laravel.com/viewtopic.php?id=1533
+ */
+
+/**
  * Guest filter
  * If is a guest send to login
  */
@@ -114,6 +120,10 @@ Route::post('(:bundle)/settings', array('as' => 'auth_settings_post', 'before' =
         $validation = Validator::make(Input::all(), $rules);
     }
 
+    /**
+     * Change Password
+     */
+
     if (isset($input['password'])) {
         $rules = array('password' => 'min:5|confirmed');
         $validation = Validator::make(Input::all(), $rules);
@@ -127,11 +137,18 @@ Route::post('(:bundle)/settings', array('as' => 'auth_settings_post', 'before' =
         $user = User::find(Auth::user() -> id);
         if (isset($input['username'])) {
             $user -> username = $input['username'];
+            $m = 'Your username has been changed';
         }
         if (isset($input['password'])) {
             $user -> password = $input['password'];
+            $m = 'Your password has been changed';
         }
-        $user -> save();
+        if($user -> save()){
+            Session::flash('info', $m);
+        }else{
+            Session::flash('error', 'Please try again');
+        }
+        
         return Redirect::to_route('auth_settings');
     }
 }));
