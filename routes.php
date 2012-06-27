@@ -1,13 +1,9 @@
 <?php
 
-if (!Config::get('access')) {
-    include __dir__.'/config/access.php';
+if (!Config::has('access')) {
+    include __dir__ . '/config/access.php';
     Config::set('access', $access);
 }
-
-$i = Config::get('authvel::access');
-var_export($i);
-exit;
 
 /**
  *
@@ -56,7 +52,8 @@ Route::get('(:bundle)', array('as' => 'auth_lobby', function() {
  * Login
  */
 Route::get('(:bundle)/login', array('as' => 'auth_login', 'before' => 'users', 'do' => function() {
-    return View::make('layout') -> with('title', 'Login') -> nest(Config::get('authvel::content'), 'authvel::login'); ;
+    return View::make('layout') -> with('title', 'Login') -> nest(Config::get('authvel::content'), 'authvel::login');
+    ;
 }));
 
 Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'users', 'do' => function() {
@@ -74,7 +71,8 @@ Route::post('(:bundle)/login', array('as' => 'auth_login_post', 'before' => 'use
  * Signup
  */
 Route::get('(:bundle)/signup', array('as' => 'auth_signup', 'before' => 'users', 'do' => function() {
-    return View::make('layout') -> with('title', 'Signup') -> nest(Config::get('authvel::content'), 'authvel::signup'); ;
+    return View::make('layout') -> with('title', 'Signup') -> nest(Config::get('authvel::content'), 'authvel::signup');
+    ;
 }));
 
 Route::post('(:bundle)/signup', array('as' => 'auth_signup_post', 'before' => 'users', 'do' => function() {
@@ -143,12 +141,12 @@ Route::post('(:bundle)/settings', array('as' => 'auth_settings_post', 'before' =
             $user -> password = $input['password'];
             $m = 'Your password has been changed';
         }
-        if($user -> save()){
+        if ($user -> save()) {
             Session::flash('info', $m);
-        }else{
+        } else {
             Session::flash('error', 'Please try again');
         }
-        
+
         return Redirect::to_route('auth_settings');
     }
 }));
@@ -200,37 +198,17 @@ function randString($length = 6, $readable = FALSE) {
 function CA($lock) {
     $check = FALSE;
     $lock = explode(',', str_replace(' ', '', $lock));
-    $lock[] = 101;
+    $lock[] = 101; #Admin is God
     Log::write('debug', "Login Control 1");
     # Admin has always access
     $keys = Config::get('access');
-    if ($keys !== FALSE) {
-        $keys = explode(',', str_replace(' ', '', $keys));
-    } else {
-        Log::write('debug', "Login Control 45");
-        $check = FALSE;
-        redirect('/control_panel/login/', 'location');
-    }
 
     foreach ($lock as $k => $v) {
         if (in_array($v, $keys)) {
-            $check = TRUE;
-        }
-        if ($v == 100) {
-            if (!in_array(100, $keys)) {
-                Log::write('debug', "Login Control 50");
-                redirect('/control_panel/login/', 'location');
-                $check = FALSE;
-            }
-            Log::write('debug', "Login Control 60");
-            $lock[$k] = FALSE;
+            return TRUE;
         }
     }
-    if ($check === TRUE) {
-        return TRUE;
-    } else {
-        Log::write('debug', "You don't have access to this area.");
-        Session::flash('error', "You don't have access to this area.");
-    }
+    Session::flash('error', "You don't have access to that area.");
+    return Redirect::to_route('auth_lobby');
 }
 ?>
