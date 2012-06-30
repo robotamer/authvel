@@ -1,5 +1,11 @@
 #authvel => Laravel Authentication
 
+
+## Dependancies:
+The ```Msg()``` class. Get it from laravel paste, and place it into your libraries folder under applications
+http://paste.laravel.com/1YV
+
+
 ## Install
 
 Add following line to application/bundles.php

@@ -142,9 +142,9 @@ Route::post('(:bundle)/settings', array('as' => 'auth_settings_post', 'before' =
             $m = 'Your password has been changed';
         }
         if ($user -> save()) {
-            Session::flash('info', $m);
+            Msg::add('info', $m);
         } else {
-            Session::flash('error', 'Please try again');
+            Msg::add('error', $m);
         }
 
         return Redirect::to_route('auth_settings');
